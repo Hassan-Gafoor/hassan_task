@@ -1,133 +1,63 @@
-<?php
-session_start();
-
-// Redirect to dashboard if already logged in
-if (isset($_SESSION['user'])) {
-    header("Location: dashboard.php");
-    exit();
-}
-
-// Initialize users array if not exists
-if (!isset($_SESSION['users'])) {
-    $_SESSION['users'] = [];
-}
-
-$error = '';
-if (isset($_POST['login'])) {
-    $email = $_POST['email'] ?? '';
-    $password = $_POST['password'] ?? '';
-
-    foreach ($_SESSION['users'] as $user) {
-        if ($user['email'] === $email && $user['password'] === $password) {
-            $_SESSION['user'] = $user;
-            header("Location: dashboard.php");
-            exit();
-        }
-    }
-    $error = "Invalid email or password!";
-}
-?>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Login | InstaClap</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <title>Select Role | InstaClap</title>
     <style>
-        * { box-sizing: border-box; }
         body {
-            font-family: 'Poppins', sans-serif;
-            background: linear-gradient(to right, #f9f9f9, #e0eafc);
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #e0eafc, #cfdef3);
             margin: 0;
+            padding: 0;
             display: flex;
+            height: 100vh;
             justify-content: center;
             align-items: center;
-            height: 100vh;
         }
         .container {
-            background: white;
-            width: 100%;
-            max-width: 400px;
-            padding: 30px 40px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
             text-align: center;
         }
-        .logo-img {
-            width: 100px;
-            margin: 0 auto 20px;
+        .role-boxes {
+            display: flex;
+            gap: 40px;
+            justify-content: center;
+            margin-top: 30px;
         }
-        .logo-text {
-            font-size: 36px;
-            color: #262626;
-            margin-bottom: 20px;
-            font-family: 'Billabong', cursive;
-        }
-        input {
-            width: 100%;
-            padding: 12px 14px;
-            margin: 10px 0;
+        .role {
+            background: white;
             border: 1px solid #ccc;
-            border-radius: 8px;
-            background: #f7f7f7;
-            font-size: 15px;
-        }
-        button {
-            width: 100%;
-            padding: 12px;
-            background-color: #3897f0;
-            border: none;
-            border-radius: 8px;
-            color: white;
-            font-weight: 600;
-            font-size: 16px;
+            border-radius: 12px;
+            padding: 30px;
+            width: 200px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
             cursor: pointer;
-            transition: background 0.3s ease;
-        }
-        button:hover {
-            background-color: #2c82dd;
-        }
-        .error {
-            color: #ed4956;
-            margin: 15px 0;
-            font-size: 14px;
-        }
-        .signup-link {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #262626;
-        }
-        .signup-link a {
-            color: #3897f0;
             text-decoration: none;
-            font-weight: 600;
+            color: #333;
         }
-        @media (max-width: 480px) {
-            .container {
-                padding: 20px;
-            }
+        .role:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+        }
+        .role img {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 15px;
+        }
+        h2 {
+            margin-bottom: 10px;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <!-- Logo Image -->
-        <img src="logo.png" alt="InstaClone Logo" class="logo-img">
-        <!-- Optional: logo text -->
-        <div class="logo-text">InstaClap</div>
-
-        <?php if ($error): ?>
-            <div class="error"><?= $error ?></div>
-        <?php endif; ?>
-
-        <form method="post">
-            <input type="email" name="email" placeholder="Email" required>
-            <input type="password" name="password" placeholder="Password" required>
-            <button type="submit" name="login">Log In</button>
-        </form>
-
-        <div class="signup-link">
-            Don't have an account? <a href="signup.php">Sign up</a>
+        <h2>Select Your Role</h2>
+        <div class="role-boxes">
+            <a class="role" href="login1.php">
+                                <h3>Creator</h3>
+            </a>
+            <a class="role" href="login.php">
+                                <h3>Consumer</h3>
+            </a>
         </div>
     </div>
 </body>

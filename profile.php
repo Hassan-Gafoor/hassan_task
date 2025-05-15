@@ -1,5 +1,4 @@
 <?php
-
 if (!isset($_SESSION['user'])) {
     header("Location: index.php");
     exit();
@@ -12,6 +11,7 @@ $success = '';
 // Handle Post Upload
 if (isset($_POST['upload'])) {
     if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $title = $_POST['title'] ?? '';
         $caption = $_POST['caption'] ?? '';
         $location = $_POST['location'] ?? $user['location'];
 
@@ -27,6 +27,7 @@ if (isset($_POST['upload'])) {
             $newPost = [
                 'id' => uniqid(),
                 'image' => $target_file,
+                'title' => $title,
                 'caption' => $caption,
                 'location' => $location,
                 'likes' => [],
@@ -145,13 +146,11 @@ if (isset($_POST['delete_post_id'])) {
         .error { color: red; text-align: center; margin-top: 10px; }
         .success { color: green; text-align: center; margin-top: 10px; }
         .posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 10px; margin-top: 20px; }
-        .post { position: relative; border-radius: 10px; overflow: hidden; }
+        .post { position: relative; border-radius: 10px; overflow: hidden; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
         .post img { width: 100%; height: auto; display: block; }
         .post form { position: absolute; top: 10px; right: 10px; }
         .post button { background: rgba(255,0,0,0.7); padding: 5px 10px; font-size: 12px; }
-        ul { list-style: none; padding: 0; }
-        li { display: flex; justify-content: space-between; align-items: center; margin: 8px 0; }
-        li form { margin-left: 10px; }
+        .post .title { padding: 10px; font-weight: bold; text-align: center; background: #fafafa; }
     </style>
 </head>
 <body>
@@ -183,17 +182,20 @@ if (isset($_POST['delete_post_id'])) {
         <h3>Upload New Post</h3>
         <form method="post" enctype="multipart/form-data">
             <input type="file" name="image" accept="image/*" required>
+            <input type="text" name="title" placeholder="Title (optional)">
             <textarea name="caption" placeholder="Write a caption..."></textarea>
             <input type="text" name="location" placeholder="Location" value="<?= htmlspecialchars($user['location']) ?>">
             <button type="submit" name="upload">Upload</button>
         </form>
     </div>
 
-   
     <div class="posts">
         <?php foreach($user['posts'] as $post): ?>
             <div class="post">
                 <img src="<?= $post['image'] ?>" alt="Post Image">
+                <?php if (!empty($post['title'])): ?>
+                    <div class="title"><?= htmlspecialchars($post['title']) ?></div>
+                <?php endif; ?>
                 <form method="post">
                     <input type="hidden" name="delete_post_id" value="<?= $post['id'] ?>">
                     <button type="submit">Delete</button>

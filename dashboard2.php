@@ -227,15 +227,10 @@ function getUsersBySearch($query, $excludeUserId) {
                     <img src="logo.png" alt="InstaClap Logo" class="logo-img">
                     <div class="logo-text">InstaClap</div>
                 </div>
-                                <a href="dashboard.php?page=profile" class="nav-link <?= $current_page === 'profile' ? 'active' : '' ?>">Profile</a>
-                           </div>
+                                                          </div>
             <div class="nav-right">
-                <form class="search-form-inline" method="get" action="dashboard.php">
-                    <input type="hidden" name="page" value="search">
-                    <input type="text" name="search" class="search-input" placeholder="Search users..." value="<?= htmlspecialchars($search_query) ?>" required>
-                    <button type="submit" class="search-button">Search</button>
-                </form>
-                <form action="logout.php" method="post" style="display:inline;">
+                <form class="search-form-inline" method="get" action="logout2.php">
+                                                       <form action="logout.php" method="post" style="display:inline;">
                     <button type="submit" class="logout-btn">Logout</button>
                 </form>
             </div>
